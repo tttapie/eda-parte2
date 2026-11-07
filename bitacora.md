@@ -9,10 +9,11 @@
 > abiertas. Si se usó IA ese día, indicar herramienta, consulta y qué se hizo con la
 > respuesta. Una bitácora escrita íntegramente el día de la entrega implica pérdida de puntos.
 
-## AAAA-MM-DD — Nombre
-- Ejemplo: Leí la letra del ejercicio 6. Primera idea: ... pero la restricción de
-  complejidad pide ..., así que ...
-
+## 2026-07-11 — Francisco 
+- Lei la letra del 1er ejercicio, y lo implemente practicamente entero
+el primer problema que tuve fue suponer el array del cartel como un entero e intentar ingresar los pares al principio y al final,
+termine usando la primer mitad del cartel y espejandolo, de forma distinta si tiene un centro o no
+la prueba 1000 pasa
 ## AAAA-MM-DD — En conjunto
 - Ejemplo: Implementamos ... Bug: ... Lo corregimos ...
 - Pasan los casos de prueba 1 a 4 del ejercicio 6.
