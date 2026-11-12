@@ -8,10 +8,10 @@
 > con comentarios en el código fuente. La omisión de fuentes puede considerarse plagio.
 
 ## Ejercicio 6
-- Sin uso de fuentes externas
+- Implementación íntegramente propia, sin fuentes externas.
 
 ## Ejercicio 7
-- Implementación íntegramente propia, sin fuentes externas.
+-  "para bajar el orden de O(N^2) a O(N log N ), tendria que recurrir a ir recortando la cantidad de comparaciones, guiame por donde deberia pensar para bajarlo."
 
 ## Ejercicio 8
 - Implementación íntegramente propia, sin fuentes externas.
