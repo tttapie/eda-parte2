@@ -11,6 +11,7 @@ std::int64_t divideNConquer(int* aux ,int* ordenLlegada , int ini , int fin){ //
     if( ini == fin ){ //caso base si hay 1 solo elemento 
         return 0;
     }
+    
 int medio = (ini + fin)/2;
 std::int64_t primeraMitad = divideNConquer(aux,ordenLlegada,ini,medio);//conquistar(llamar recursivo con cada mitad)
 std::int64_t segundaMitad = divideNConquer(aux,ordenLlegada,medio+1,fin);

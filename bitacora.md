@@ -17,3 +17,5 @@ la prueba 1000 pasa
 ## 2026-11-11 — Francisco 
 - 2do ejercicio, para la logica del merge, al principio pensamos en ir comparando todos los elementos  de la izquierda del array ordenado con los de al derecha , y si cumple con la condicion de que si su nro es al menos 2 veces mayor del otro, suma 1 a la cantidad de remontadas epicas.
 recorriamos cada parte del array y comparabamos sumando cuando cumplia la condicion pero esto no es O(N log N), es O(N^2), en este caso nos trancamos y tuvimos que recurrir a usar ia para bajar el orden. Segun lo que concluimos con la ayuda de la ia , tenemos que ir ordenando las mitades luego de compararse, para que la proxima vez, si la condicion no cunple con el 1er elemento de la segunda mitad, todos los otros tampoco lo van a hacer, recortando casos.
+## 2026-12-11 — Marco y Francisco
+-leimos el 3er ejercicio e hicimos la version recursiva previa a la tabulation
