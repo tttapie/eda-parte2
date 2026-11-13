@@ -19,3 +19,8 @@ la prueba 1000 pasa
 recorriamos cada parte del array y comparabamos sumando cuando cumplia la condicion pero esto no es O(N log N), es O(N^2), en este caso nos trancamos y tuvimos que recurrir a usar ia para bajar el orden. Segun lo que concluimos con la ayuda de la ia , tenemos que ir ordenando las mitades luego de compararse, para que la proxima vez, si la condicion no cunple con el 1er elemento de la segunda mitad, todos los otros tampoco lo van a hacer, recortando casos.
 ## 2026-12-11 — Marco y Francisco
 -leimos el 3er ejercicio e hicimos la version recursiva previa a la tabulation
+## 2026-13-11 — Marco y Francisco
+-Seguimos con el ejercicio 3, para definir la estructura para guardar los datos de la satisfaccion, es una lista de tablas, para que no sean 5 variables y sean 3 
+decidimos que los limites que van cambiando mientras se compran o venden productos de cada categria se va a calcular de forma que   ej: comprado = [1,0,2,0] -> idx = 1 + 0 + 32 + 0 = 33, en este paso le pedimos ayuda a la ia.
+Terminamos el ejercicio pasando la recursiva a tabulation,  int compradosCat = (k / mult[cat]) % 4 utilizamos esa formula para sacar la cantidad de comprados en cada categoria.
+La prueba 100 pasa
