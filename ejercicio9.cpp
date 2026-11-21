@@ -5,8 +5,93 @@
 
 using namespace std;
 
+int cantMaxLikes(int*** memo, int cantRondas, int rondaActual, int diferenciaAyB, int estadoBaileAnterior, int* pateadores, int* likes) {
+
+      int maxLikes = 0;   //variable que lleva el maximo 
+       if (rondaActual < cantRondas) {
+
+        if(memo[rondaActual][diferenciaAyB][estadoBaileAnterior] != -1){
+            maxLikes = memo[rondaActual][diferenciaAyB][estadoBaileAnterior]; //si ya lo calcule, lo uso
+
+        }else{
+             int diferenciaTrasPateoA = diferenciaAyB + pateadores[rondaActual];
+
+            //decide no bailar no baila
+             maxLikes = cantMaxLikes(memo, cantRondas, rondaActual + 1, diferenciaTrasPateoA, 0, pateadores, likes);
+
+            //baila 
+            if(diferenciaTrasPateoA > 0 ){ // A no puede estar x debajo de B
+                int likesDelBaile = likes[rondaActual];
+
+                   if (estadoBaileAnterior == 1) { // si en el anterior bailo, ahora cuesta la mitad de likes 
+                    likesDelBaile = likes[rondaActual] / 2;   
+                    }
+
+                int likesSiBaila =  cantMaxLikes(memo, cantRondas, rondaActual + 1, diferenciaTrasPateoA - 1, 1, pateadores, likes); //cuantos likes da bailar
+                if (likesSiBaila > maxLikes) {
+                    maxLikes = likesSiBaila; // se compara maxLikes que tiene la cantidad de no bailar con likesSiBaila
+                }
+
+            }
+           memo[rondaActual][diferenciaAyB][estadoBaileAnterior] = maxLikes;
+        }
+      
+       }
+           return maxLikes;
+}
+
 int main()
 {
+    int cantRondas = 0;
+   std:: cin >> cantRondas;
 
-    return 0;
+   int* pateadoresA = new int(cantRondas); //a ∈ {0, 1}: 1 si el pateador i de A convierte, 0 si la erra
+   for (int i = 0; i < cantRondas; i++)
+   {
+    std:: cin >>pateadoresA[i];
+   }
+
+   int* likes = new int(cantRondas);//los likes que da bailar en el tiro i de B, con 1 ≤ likes ≤ 10 .
+   for (int i = 0; i < cantRondas; i++)
+   {
+    std:: cin >> likes[i];
+   }
+//memo[i][d][p]\, i son las rondas, d es la ventaja de A al empezar la ronda  y p es si bailo en el tiro anterior(variables del estado)
+int*** memo = new int**[cantRondas];
+for (int i = 0; i < cantRondas; i++) {
+    memo[i] = new int*[cantRondas];
+    for (int j = 0; j < cantRondas; j++) {
+        memo[i][j] = new int[2];
+        memo[i][j][0] = -1;
+        memo[i][j][1] = -1;
+    }
 }
+     
+   cout << cantMaxLikes(memo, cantRondas, 0, 0, 0, pateadoresA, likes) << endl;
+}
+
+
+/* Manera recursiva
+int cantMaxLikes(int cantRondas, int rondaActual, int diferenciaAyB, int estadoBaileAnterior, int* pateadores, int* likes) {
+    int maxLikes = 0;                                   // caso base: no quedan rondas
+    if (rondaActual < cantRondas) {
+        int diferenciaTrasPateoA = diferenciaAyB + pateadores[rondaActual];
+
+        // opcion 1: no bailar
+        maxLikes = cantMaxLikes(cantRondas, rondaActual + 1, diferenciaTrasPateoA, 0, pateadores, likes);
+
+        // opcion 2: bailar, solo si A no queda abajo despues del gol de B
+        if (diferenciaTrasPateoA >= 1) {
+            int likesDelBaile = likes[rondaActual];
+            if (estadoBaileAnterior == 1) {
+                likesDelBaile = likes[rondaActual] / 2;
+            }
+            int likesSiBaila = likesDelBaile + cantMaxLikes(cantRondas, rondaActual + 1, diferenciaTrasPateoA - 1, 1, pateadores, likes);
+            if (likesSiBaila > maxLikes) {
+                maxLikes = likesSiBaila;
+            }
+        }
+    }
+    return maxLikes;
+}
+*/
