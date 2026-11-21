@@ -20,7 +20,13 @@ recorriamos cada parte del array y comparabamos sumando cuando cumplia la condic
 ## 2026-12-11 — Marco y Francisco
 -leimos el 3er ejercicio e hicimos la version recursiva previa a la tabulation
 ## 2026-13-11 — Marco y Francisco
--Seguimos con el ejercicio 3, para definir la estructura para guardar los datos de la satisfaccion, es una lista de tablas, para que no sean 5 variables y sean 3 
-decidimos que los limites que van cambiando mientras se compran o venden productos de cada categria se va a calcular de forma que   ej: comprado = [1,0,2,0] -> idx = 1 + 0 + 32 + 0 = 33, en este paso le pedimos ayuda a la ia.
-Terminamos el ejercicio pasando la recursiva a tabulation,  int compradosCat = (k / mult[cat]) % 4 utilizamos esa formula para sacar la cantidad de comprados en cada categoria.
+-Seguimos con el ejercicio 3, para definir la estructura para guardar los datos de la satisfaccion, es una lista de tablas, que son  5 variables, los elementos
+el peso y las 4 categorias, que son las variables que van cambiando el posible resultado
 La prueba 100 pasa
+## 2026-20-11 — Marco y Francisco
+-Ejercicio 9 entero, primero hicimos la recursion y luego lo pasamos a memoization
+-Si el valor no estaba calculado y la ronda era menor a la cantidad de rondas total, se calcula y compara compara la opcion de bailar con la de no bailar y se queda
+-con el que consigue mas likes 
+## 2026-21-11 — Marco y Francisco
+-Comenzamos el ejercicio 10, planteamos todo el ejercicio, nos faltan las podas y reducir casos 
+-muchos_largos.in.txt pasa pero tarda mucho

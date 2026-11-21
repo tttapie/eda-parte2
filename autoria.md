@@ -19,8 +19,10 @@
 - Escribie la inicializacion de la matriz y la liberacion de la memoria de este, los casos base los pusimos nosotros
 
 ## Ejercicio 9
-- Implementación íntegramente propia, sin fuentes externas.
+- Ia generativa ,claude
+- Correccion de detalles menores, identacion y errores tipograficos.
 
 ## Ejercicio 10
-- Implementación íntegramente propia, sin fuentes externas.
+- Ia generativa, claude
+- Ayuda en la Implementacion de podas , columnas ok yordenar letras
 
