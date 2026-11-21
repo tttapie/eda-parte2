@@ -8,7 +8,7 @@ using namespace std;
 int cantMaxLikes(int*** memo, int cantRondas, int rondaActual, int diferenciaAyB, int estadoBaileAnterior, int* pateadores, int* likes) {
 
       int maxLikes = 0;   //variable que lleva el maximo 
-       if (rondaActual < cantRondas) {
+       if (rondaActual < cantRondas) { // mientras la ronda en la que estoy sea menor a la cantida de Rondas total
 
         if(memo[rondaActual][diferenciaAyB][estadoBaileAnterior] != -1){
             maxLikes = memo[rondaActual][diferenciaAyB][estadoBaileAnterior]; //si ya lo calcule, lo uso
@@ -24,10 +24,11 @@ int cantMaxLikes(int*** memo, int cantRondas, int rondaActual, int diferenciaAyB
                 int likesDelBaile = likes[rondaActual];
 
                    if (estadoBaileAnterior == 1) { // si en el anterior bailo, ahora cuesta la mitad de likes 
-                    likesDelBaile = likes[rondaActual] / 2;   
+                    likesDelBaile = likesDelBaile / 2;   
                     }
 
-                int likesSiBaila =  cantMaxLikes(memo, cantRondas, rondaActual + 1, diferenciaTrasPateoA - 1, 1, pateadores, likes); //cuantos likes da bailar
+                int likesSiBaila =  likesDelBaile + cantMaxLikes(memo, cantRondas, rondaActual + 1, diferenciaTrasPateoA - 1, 1, pateadores, likes); //cuantos likes da bailar
+                    //pato baila entonces meten gol, x eso se resta a diferenciaTrasPateoA 
                 if (likesSiBaila > maxLikes) {
                     maxLikes = likesSiBaila; // se compara maxLikes que tiene la cantidad de no bailar con likesSiBaila
                 }
@@ -45,13 +46,13 @@ int main()
     int cantRondas = 0;
    std:: cin >> cantRondas;
 
-   int* pateadoresA = new int(cantRondas); //a ∈ {0, 1}: 1 si el pateador i de A convierte, 0 si la erra
+   int* pateadoresA = new int[cantRondas]; //a ∈ {0, 1}: 1 si el pateador i de A convierte, 0 si la erra
    for (int i = 0; i < cantRondas; i++)
    {
     std:: cin >>pateadoresA[i];
    }
 
-   int* likes = new int(cantRondas);//los likes que da bailar en el tiro i de B, con 1 ≤ likes ≤ 10 .
+   int* likes = new int[cantRondas];//los likes que da bailar en el tiro i de B, con 1 ≤ likes ≤ 10 .
    for (int i = 0; i < cantRondas; i++)
    {
     std:: cin >> likes[i];

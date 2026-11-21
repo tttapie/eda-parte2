@@ -11,10 +11,12 @@
 - Implementación íntegramente propia, sin fuentes externas.
 
 ## Ejercicio 7
+- IA generativa , claude
 -  "para bajar el orden de O(N^2) a O(N log N ), tendria que recurrir a ir recortando la cantidad de comparaciones, guiame por donde deberia pensar para bajarlo."
 
 ## Ejercicio 8
-- Implementación íntegramente propia, sin fuentes externas.
+- Ia generativa , claude
+- "Como podriamos reducir el tamanio de la tabla, para que quede de menos parametros"
 
 ## Ejercicio 9
 - Implementación íntegramente propia, sin fuentes externas.
