@@ -16,7 +16,7 @@
 
 ## Ejercicio 8
 - Ia generativa , claude
-- "Como podriamos reducir el tamanio de la tabla, para que quede de menos parametros"
+- Escribie la inicializacion de la matriz y la liberacion de la memoria de este, los casos base los pusimos nosotros
 
 ## Ejercicio 9
 - Implementación íntegramente propia, sin fuentes externas.
