@@ -23,14 +23,14 @@ int main()
     int *limites = new int[4];
 
     for (int i = 0; i < 4; i++)
-    { // tomo datos de los limites
+    {
         std::cin >> limites[i];
     }
 
     producto *productos = new producto[cantProductos];
 
     for (int i = 0; i < cantProductos; i++)
-    { // lista productos
+    {
         std::cin >> productos[i].peso >> productos[i].satisfaccion >> productos[i].categoria;
     }
 
@@ -56,7 +56,7 @@ int satisfaccionTab(producto *productos, int cantProductos, int *limites, int pe
 
         tab[i] = new int ****[pesoHeladera + 1];
 
-        for (int j = 0; j <= pesoHeladera; j++)
+        for (int j = 0; j <= pesoHeladera; j++) // fragmento generado por claude
         {
 
             tab[i][j] = new int ***[limites[0] + 1];
@@ -78,7 +78,7 @@ int satisfaccionTab(producto *productos, int cantProductos, int *limites, int pe
 
                         for (int c3 = 0; c3 <= limites[3]; c3++)
                         {
-                            tab[i][j][c0][c1][c2][c3] = 0; // inicializo toda la matriz en 0
+                            tab[i][j][c0][c1][c2][c3] = 0;
                         }
                     }
                 }
@@ -86,11 +86,11 @@ int satisfaccionTab(producto *productos, int cantProductos, int *limites, int pe
         }
     }
 
-    // lleno de abajo hacia arriba: la hoja i usa la hoja i+1 (igual que resolver(indice+1))
+   
     for (int i = cantProductos - 1; i >= 0; i--)
     {
-        int cat = productos[i].categoria; //categoria de cada producto
-        int peso = productos[i].peso; // peso del producto
+        int cat = productos[i].categoria;
+        int peso = productos[i].peso;
 
         for (int j = 0; j <= pesoHeladera; j++)
         {
@@ -103,23 +103,22 @@ int satisfaccionTab(producto *productos, int cantProductos, int *limites, int pe
                         for (int c3 = 0; c3 <= limites[3]; c3++)
                         {
 
-                            // opcion 1: no compro este producto
+                            //no compro este producto
                             int res = tab[i + 1][j][c0][c1][c2][c3];
 
-                            // armo comprado para poder fijarme en la categoria del producto
                             int comprado[4] = {c0, c1, c2, c3};
 
-                            // opcion 2: lo compro, si entra y no me paso del limite de su categoria
+                            // lo compro, si entra y no me paso del limite de su categoria
                             if (peso <= j && comprado[cat] < limites[cat]) 
                             {
-                                comprado[cat]++; // un producto mas de esa categoria
-                                int comprando = productos[i].satisfaccion + tab[i + 1][j - peso][comprado[0]][comprado[1]][comprado[2]][comprado[3]];// i+1 pasa al sig pproducto y se le resta el peso del producto a J que es el espacio que te queda en la heladera 
+                                comprado[cat]++;
+                                int comprando = productos[i].satisfaccion + tab[i + 1][j - peso][comprado[0]][comprado[1]][comprado[2]][comprado[3]];
                                 if (comprando > res)
                                 {
                                     res = comprando;
                                 }
                             }
-                            tab[i][j][c0][c1][c2][c3] = res; // guardo
+                            tab[i][j][c0][c1][c2][c3] = res;
                         }
                     }
                 }
@@ -131,8 +130,7 @@ int satisfaccionTab(producto *productos, int cantProductos, int *limites, int pe
     // la heladera esta vacia y no compre nada 
     int resultado = tab[0][pesoHeladera][0][0][0][0];
 
-    // libero la memoria
-    for (int i = 0; i <= cantProductos; i++)
+    for (int i = 0; i <= cantProductos; i++) // fragmento generado por claude
     {
         for (int j = 0; j <= pesoHeladera; j++)
         {

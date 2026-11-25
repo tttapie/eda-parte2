@@ -5,10 +5,10 @@
 #include <cstdint>
 
 using namespace std;
-// devuelve un array con una posicion por letra (A..Z)
+// devuelve un array con una posicion por letra (A...Z)
 // valores[letra - 'A'] = digito que tiene esa letra
-// -1 = la letra aparece en el acertijo pero todavia no tiene digito
-// -2 = la letra no aparece en el acertijo
+// -1 , la letra aparece en el acertijo pero todavia no tiene digito
+// -2 , la letra no aparece en el acertijo
 int *listaValores(string *sumandos, int cantSumandos, string resultado)
 {
     int *valores = new int[26];
@@ -19,13 +19,12 @@ int *listaValores(string *sumandos, int cantSumandos, string resultado)
 
     for (int i = 0; i < cantSumandos; i++)
     {
-        for (int j = 0; j < sumandos[i].length(); j++) // por cada sumando agarran su largo y poner que existe;
+        for (int j = 0; j < sumandos[i].length(); j++)
         {
-            char letra = sumandos[i][j]; // ver cada letra de la palabra
-            valores[letra - 'A'] = -1;   // poner que existe
+            char letra = sumandos[i][j];
+            valores[letra - 'A'] = -1;
         }
     }
-    // marcar letras del resultado
     for (int j = 0; j < resultado.length(); j++)
     {
         char letra = resultado[j];
@@ -35,7 +34,7 @@ int *listaValores(string *sumandos, int cantSumandos, string resultado)
     return valores;
 }
 
-std::int64_t palabraANumero(string palabra, int *valores) //arma el número multiplicando por 10 y sumando el dígito de cada letra.
+std::int64_t palabraANumero(string palabra, int *valores) // arma el número a base de la palabra multiplicando por 10 y sumando el dígito de cada letra
 {
     std::int64_t numero = 0;
     for (int i = 0; i < palabra.length(); i++)
@@ -45,7 +44,8 @@ std::int64_t palabraANumero(string palabra, int *valores) //arma el número mult
     return numero;
 }
 
-bool esMejor(std::int64_t *actual, std::int64_t *mejor, int cantSumandos){//solo compara, devuelve true si actual es mejor que mejor
+bool esMejor(std::int64_t *actual, std::int64_t *mejor, int cantSumandos)
+{
     bool res = false;
     if (actual[cantSumandos] != mejor[cantSumandos])
     {
@@ -54,7 +54,7 @@ bool esMejor(std::int64_t *actual, std::int64_t *mejor, int cantSumandos){//solo
     else
     {
         bool decidido = false;
-        for (int i = 0; i < cantSumandos && !decidido; i++) //Gana el menor resultado,si empatan, gana el menor primer sumando,si siguen empatando, el menor segundo sumando, y así.
+        for (int i = 0; i < cantSumandos && !decidido; i++) // Gana el menor resultado,si empatan, gana el menor primer sumando,si siguen empatando, el menor segundo sumando, y asi
         {
             if (actual[i] != mejor[i])
             {
@@ -68,114 +68,212 @@ bool esMejor(std::int64_t *actual, std::int64_t *mejor, int cantSumandos){//solo
 
 // se llama cuando todas las letras tienen digito
 // pasa las palabras a numero, chequea la suma y si es mejor la guarda
-void evaluarSolucion(int *valores, int cantSumandos, string *sumandos, string resultado, std::int64_t *mejor, bool &hay){
+void evaluarSolucion(int *valores, int cantSumandos, string *sumandos, string resultado, std::int64_t *mejor, bool &hay)
+{
     std::int64_t *actual = new std::int64_t[cantSumandos + 1];
     std::int64_t suma = 0;
 
-    for (int i = 0; i < cantSumandos; i++){ // paso todas las palabras a numero
-    
+    for (int i = 0; i < cantSumandos; i++)
+    {
+
         actual[i] = palabraANumero(sumandos[i], valores);
         suma = suma + actual[i];
     }
-//en actual guarda el nro de cada palabra y el resultado al final
 
-    actual[cantSumandos] = palabraANumero(resultado, valores);// paso el resultado a numero
+    actual[cantSumandos] = palabraANumero(resultado, valores);
 
-    if (suma == actual[cantSumandos]) // si la suma es = al resultado en numeros
+    if (suma == actual[cantSumandos])
     {
         // si es la primera que encuentro, o es mejor que la guardada, la guardo
-        if (!hay || esMejor(actual, mejor, cantSumandos)) //entra si es la primera solucion que encuentra o si es mejor que la guardada
+        if (!hay || esMejor(actual, mejor, cantSumandos))
         {
             for (int i = 0; i <= cantSumandos; i++)
             {
-                mejor[i] = actual[i]; // copia actial en mejor posicion x posicion(se actualiza mejor)
+                mejor[i] = actual[i];
             }
-            hay = true; // pone el hay en true si no lo estaba(es el 1ero que encuentra)
+            hay = true;
         }
     }
     delete[] actual;
 }
-//la mejor solucion queda guardada en mejor y hay
-void backtracking(int pos, int *valores, int cantSumandos, bool *valoresDispoibles, bool *esInicial, string *sumandos, string resultado, std::int64_t *mejor, bool &hay){
-   // mejor y &hay: aca se guarda la mejor solucion
-   //el & hace que el cambio en hay se vea afuera de la funcion
-    if (pos == 26)// si recorri todas las palabras
+// devuelve el digito que tiene la palabra en esa columna
+// si la palabra es mas corta y no llega a esa columna, devuelve 0
+// si la letra todavia no tiene digito, devuelve -1
+int digitoEnColumna(string palabra, int columna, int *valores) //(funcion separada de podaColumnas por IA)
+{
+    int digito = 0;
+    int largo = palabra.length();
+    if (columna < largo)
     {
-        evaluarSolucion(valores, cantSumandos, sumandos, resultado, mejor, hay);//con la asignación completa, chequea si la suma da bien y, si es mejor, la guarda en mejor
+        char letra = palabra[largo - 1 - columna];
+        digito = valores[letra - 'A'];
     }
-    else
+    return digito;
+}
+
+// hace la suma columna por columna desde la derecha
+// devuelve true si alguna columna no cierra
+// frena cuando llega a una columna con alguna letra sin digito
+bool podaColumnas(int *valores, int cantSumandos, string *sumandos, string resultado)
+{
+    bool hayQuePodar = false;
+    bool sigo = true;
+    int acarreo = 0;
+
+    for (int columna = 0; columna < resultado.length() && sigo; columna++)
     {
-        if (valores[pos] == -2){ // esta letra no esta en el acertijo
-            backtracking(pos + 1, valores, cantSumandos, valoresDispoibles, esInicial, sumandos, resultado, mejor, hay); // si el valor es -2 esa letra no aparece, continuo con pos+1
-        }
-        else // la letra aparece: pruebo cada digito
+        int suma = acarreo;
+        for (int i = 0; i < cantSumandos && sigo; i++)
         {
-            for (int d = 0; d < 10; d++) // pruebo cada digito para la letra (letra es pos)
+            int digito = digitoEnColumna(sumandos[i], columna, valores);
+            if (digito == -1)
             {
-                if (valoresDispoibles[d] && !(d == 0 && esInicial[pos])) // el digito d esta disponible y 
+                sigo = false; // falta asignar una letra, esta columna no se puede revisar
+            }
+            else
+            {
+                suma = suma + digito;
+            }
+        }
+
+        if (sigo)
+        {
+            int digitoResultado = digitoEnColumna(resultado, columna, valores);
+            if (digitoResultado == -1)
+            {
+                sigo = false; // la letra del resultado todavia no tiene digito
+            }
+            else
+            {
+                if (suma % 10 != digitoResultado)
                 {
-                    valores[pos] = d;             // tomo el valor y lo pongo el chat que corresponde (pos)
-                    valoresDispoibles[d] = false; // ocupo el valor
-
-                    backtracking(pos + 1, valores, cantSumandos, valoresDispoibles, esInicial, sumandos, resultado, mejor, hay); // hago backtrack con el siguiente
-
-                    valoresDispoibles[d] = true; // lo libero
-                    valores[pos] = -1;
+                    hayQuePodar = true;
+                    sigo = false;
                 }
+                acarreo = suma / 10;
             }
         }
     }
+    return hayQuePodar;
 }
-//podas para backtracking
-//Si un sumando tiene más letras que el resultado, es imposible: ese sumando solo ya es más grande que el resultado, porque no puede empezar con 0.
-//comparar el largo de cada sumando, y si alguno es mas largo que la solucion entonces no hay solucion 
-//claude: Poda por columnas (la importante)
 
-// devuelve la solucion (sumandos y al final el resultado), o NULL si no tiene
+
+void backtracking(int pos, int *orden, int cantLetras, int *valores, int cantSumandos, bool *valoresDispoibles, bool *esInicial, string *sumandos, string resultado, std::int64_t *mejor, bool &hay){
+    if (pos == cantLetras)// si ya le di digito a todas las letras (fragmento generado por IA)
+    {
+        evaluarSolucion(valores, cantSumandos, sumandos, resultado, mejor, hay);
+    }
+    else
+    {
+        int letra = orden[pos]; 
+        for (int d = 0; d < 10; d++)
+            {
+                if (valoresDispoibles[d] && !(d == 0 && esInicial[letra]) ) // el digito d esta disponible y no puede pasar que si el d es 0 la letra sea inicial
+                {
+                    valores[letra] = d;
+                    valoresDispoibles[d] = false;
+
+                    if(!podaColumnas(valores,cantSumandos,sumandos,resultado)){
+                         backtracking(pos + 1, orden, cantLetras, valores, cantSumandos, valoresDispoibles, esInicial, sumandos, resultado, mejor, hay);
+
+                    }
+                   
+                    valoresDispoibles[d] = true;
+                    valores[letra] = -1;
+                }
+            }
+    }
+}
+
+
 std::int64_t *solucionAcertijo(int cantSumandos, string *sumandos, string resultado)
 {
-    std::int64_t* sol = new std::int64_t[cantSumandos + 1];
+    std::int64_t *sol = new std::int64_t[cantSumandos + 1];
 
-    bool *valoresDispoibles = new bool[10]; // de 0 a 9
+    bool *valoresDispoibles = new bool[10];
     for (int i = 0; i < 10; i++)
     {
         valoresDispoibles[i] = true;
     }
 
-    int *valores = listaValores(sumandos, cantSumandos, resultado); // para cada letra
+    int *valores = listaValores(sumandos, cantSumandos, resultado);
 
     bool *esInicial = new bool[26];
     for (int i = 0; i < 26; i++)
     {
-        esInicial[i] = false; // arrancar todo en false
+        esInicial[i] = false;
     }
 
     for (int i = 0; i < cantSumandos; i++)
     {
-        if (sumandos[i].length() > 1) // si tiene mas de una letra
+        if (sumandos[i].length() > 1)
         {
-            esInicial[sumandos[i][0] - 'A'] = true; // las letras iniciales de las palabras se ponen en true
+            esInicial[sumandos[i][0] - 'A'] = true;
         }
     }
     if (resultado.length() > 1)
-    { // lo mismo para el resultado
+    {
         esInicial[resultado[0] - 'A'] = true;
     }
 
     bool hay = false;
-    backtracking(0, valores, cantSumandos, valoresDispoibles, esInicial, sumandos, resultado, sol, hay);
 
-    // libero la memoria
+    bool posible = true;
+    for (int i = 0; i < cantSumandos && posible; i++)
+    {
+        if (sumandos[i].length() > resultado.length()) 
+        {
+            posible = false;
+        }
+    }
+
+    int *orden = new int[10]; //(fragmento generado por IA)
+    int cantLetras = 0;
+    bool *agregada = new bool[26];
+    for (int i = 0; i < 26; i++)
+    {
+        agregada[i] = false;
+    }
+    for (int columna = 0; columna < resultado.length(); columna++)
+    {
+        for (int i = 0; i <= cantSumandos; i++) 
+        {
+            string palabra = resultado;
+            if (i < cantSumandos)
+            {
+                palabra = sumandos[i];
+            }
+            int largo = palabra.length();
+            if (columna < largo)
+            {
+                int letra = palabra[largo - 1 - columna] - 'A';
+                if (!agregada[letra])
+                {
+                    agregada[letra] = true;
+                    orden[cantLetras] = letra;
+                    cantLetras++;
+                }
+            }
+        }
+    }
+
+    if (posible)
+    {
+        backtracking(0, orden, cantLetras, valores, cantSumandos, valoresDispoibles, esInicial, sumandos, resultado, sol, hay);
+    }
+
     delete[] valoresDispoibles;
     delete[] valores;
     delete[] esInicial;
+    delete[] orden;
+    delete[] agregada;
 
     if (!hay)
     {
         delete[] sol;
         return NULL;
     }
-    return sol; // en sol queda la mejor solucion , NULL si no tienen sol
+    return sol;
 }
 
 int main()

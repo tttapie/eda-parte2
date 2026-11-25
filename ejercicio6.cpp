@@ -7,9 +7,9 @@ using namespace std;
 
 
 int* Cantvalores(int* nrosPlacas, int placas) {
-    int* valores = new int[1001]; // 1001 para que entre el indice 1000
+    int* valores = new int[1001]; 
     for (int i = 0; i <= 1000; i++) {
-        valores[i] = 0; // inicializar en 0, new no lo hace
+        valores[i] = 0;
     }
     for (int i = 0; i < placas; i++) {
         valores[nrosPlacas[i]]++; // valores tiene cuantas veces aparece cada valor en las placas
@@ -19,27 +19,27 @@ int* Cantvalores(int* nrosPlacas, int placas) {
 
 int* secuenciaOptima(int*nrosPlacas,int placas,int& largo){
     int* valores = Cantvalores(nrosPlacas,placas);
-    int* cartel = new int[placas];// el cartel nunca tiene mas de n placas
-    int cant = 0;
+    int* cartel = new int[placas];
+    int cant = 0; //placas de la mitad izquierda
     int centro = -1;
     for (int i = 1000; i >= 0; i--) {
  
-            int pares = valores[i] / 2; //para los valores que tengan 2 o mas, si tiene 1 da 0
+            int pares = valores[i] / 2;
 
-         for (int j = 0; j < pares; j++) { // lo agrego al final del array (mitad izquierda) ;las mitad de las veces que aparece
+         for (int j = 0; j < pares; j++) {
             cartel[cant] = i;
             cant++;
             }
         
     if (valores[i] % 2 == 1 && centro == -1 ) {
-        centro = i; // el  centro toma el mas grande que tenga valor impar de todos pqe el array se recorre de atras para ademante
+        centro = i; 
     }
 
 }
 
 
 if(centro != -1){ 
-cartel[cant]=centro; // agrego el centro luego de agregar todos los pares
+cartel[cant]=centro;
 
 for( int i = 1; i <= cant; i++){
     cartel[cant + i] = cartel[cant-i]; //espejo con centro
@@ -47,9 +47,9 @@ for( int i = 1; i <= cant; i++){
 
 largo = 2 * cant + 1;
 
-} else{//sino se cumple esto significa que todos eran pares 
+} else{
 
-    for( int i = 0; i < placas; i++){
+    for( int i = 0; i < cant; i++){
     cartel[cant + i] = cartel[cant-1-i]; //espejo sin centro
     }
 largo = 2 * cant;
@@ -64,11 +64,11 @@ largo = 2 * cant;
 int main()
 {
     int placas;
-    std:: cin >> placas ;  //>> es de lectura
+    std:: cin >> placas ;
 
     int* nrosPlacas = new int[placas];
 
-    for(int i=0;i<placas;i++){ // tomo todos los numeros de las placas
+    for(int i=0;i<placas;i++){
         std::cin>>nrosPlacas[i] ;
     }
 
@@ -77,7 +77,7 @@ int* cartel = secuenciaOptima(nrosPlacas, placas, largo);
 
 for(int i = 0 ; i < largo ; i++){
     if (i > 0) {
-        std::cout << " "; // espacio antes de cada numero menos el primero
+        std::cout << " ";
     }
     std::cout << cartel[i];
 }
